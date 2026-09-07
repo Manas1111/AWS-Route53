@@ -49,13 +49,15 @@ export default function CreateHostedZonePage() {
       {/* Page title */}
       <h1 className="aws-create-page-title">
         Create hosted zone
-        <span className="aws-label-info" style={{ fontSize: "13px", fontWeight: 400 }}>Info</span>
+        <span className="aws-label-info" style={{ fontSize: "12px", fontWeight: 400, marginLeft: "4px" }}>
+          Info
+        </span>
       </h1>
 
       <form onSubmit={handleSubmit} noValidate>
         {/* API error */}
         {apiError && (
-          <div className="aws-alert error" style={{ marginBottom: "16px" }}>
+          <div className="aws-alert error" style={{ marginBottom: "16px", maxWidth: "800px" }}>
             <span>{apiError}</span>
           </div>
         )}
@@ -93,12 +95,12 @@ export default function CreateHostedZonePage() {
                 placeholder="example.com"
                 disabled={isSubmitting}
                 autoFocus
-                style={{ maxWidth: "660px" }}
+                style={{ maxWidth: "800px" }}
               />
               {nameError ? (
                 <span className="aws-form-error">{nameError}</span>
               ) : (
-                <span className="aws-form-hint">
+                <span className="aws-form-hint" style={{ maxWidth: "800px" }}>
                   Valid characters: a-z, 0-9, ! &quot; # $ % &amp; &apos; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` &#x7B; | &#x7D; ~
                 </span>
               )}
@@ -107,8 +109,7 @@ export default function CreateHostedZonePage() {
             {/* Description */}
             <div className="aws-form-group">
               <label htmlFor="hz-description" className="aws-label">
-                Description
-                <span className="aws-label-optional">- optional</span>
+                Description - optional
                 <span className="aws-label-info">Info</span>
               </label>
               <p className="aws-form-desc">
@@ -124,15 +125,15 @@ export default function CreateHostedZonePage() {
                 }}
                 placeholder="The hosted zone is used for..."
                 disabled={isSubmitting}
-                style={{ maxWidth: "660px", fontFamily: "var(--font)", fontSize: "13px" }}
+                style={{ maxWidth: "800px", minHeight: "72px", fontFamily: "var(--font)", fontSize: "13px" }}
               />
-              <span className="aws-char-count">
+              <span className="aws-char-count" style={{ maxWidth: "800px" }}>
                 The description can have up to {MAX_DESC} characters. {description.length}/{MAX_DESC}
               </span>
             </div>
 
             {/* Type */}
-            <div className="aws-form-group">
+            <div className="aws-form-group" style={{ marginBottom: 0 }}>
               <label className="aws-label">
                 Type
                 <span className="aws-label-info">Info</span>
@@ -141,7 +142,7 @@ export default function CreateHostedZonePage() {
                 The type indicates whether you want to route traffic on the internet or in an Amazon VPC.
               </p>
 
-              <div className="aws-radio-cards" style={{ maxWidth: "660px" }}>
+              <div className="aws-radio-cards" style={{ maxWidth: "800px" }}>
                 {/* Public */}
                 <label
                   className={`aws-radio-card${type === "PUBLIC" ? " selected" : ""}`}
@@ -191,27 +192,41 @@ export default function CreateHostedZonePage() {
           </div>
         </div>
 
-        {/* Tags section (visual placeholder only) */}
+        {/* Tags section matching AWS console reference */}
         <div className="aws-create-section">
-          <div className="aws-create-section-header" style={{ paddingBottom: "14px" }}>
-            <h2 style={{ marginBottom: "0" }}>
+          <div className="aws-create-section-header">
+            <h2>
               Tags
-              <span className="aws-label-info" style={{ marginLeft: "8px", fontSize: "13px", fontWeight: 400 }}>Info</span>
+              <span className="aws-label-info" style={{ marginLeft: "4px", fontSize: "12px", fontWeight: 400 }}>
+                Info
+              </span>
             </h2>
+            <p>
+              Apply tags to hosted zones to help organize and identify them.
+            </p>
           </div>
           <div className="aws-create-section-body">
-            <p style={{ fontSize: "13px", color: "var(--aws-text-secondary)" }}>
-              Tags are key-value pairs that help you organize, track, and control access to your AWS resources.
-              You can add up to 10 tags per hosted zone.
-            </p>
+            <div style={{ fontSize: "13px", color: "var(--aws-text-primary)", marginBottom: "14px" }}>
+              No tags associated with the resource.
+            </div>
+            <button
+              type="button"
+              className="aws-btn-pill-action"
+              onClick={() => {}}
+            >
+              Add tag
+            </button>
+            <div style={{ marginTop: "8px", fontSize: "12px", color: "var(--aws-text-secondary)" }}>
+              You can add up to 50 more tags.
+            </div>
           </div>
         </div>
 
-        {/* Footer actions */}
+        {/* Bottom actions matching AWS reference */}
         <div className="aws-create-footer">
           <button
             type="button"
-            className="aws-btn aws-btn-secondary"
+            className="aws-btn-link-action"
             onClick={() => router.push("/hosted-zones")}
             disabled={isSubmitting}
           >
@@ -219,7 +234,7 @@ export default function CreateHostedZonePage() {
           </button>
           <button
             type="submit"
-            className="aws-btn aws-btn-primary"
+            className="aws-btn-pill-primary"
             disabled={isSubmitting}
           >
             {isSubmitting ? (

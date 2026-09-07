@@ -55,7 +55,7 @@ function getBreadcrumbs(pathname: string) {
 }
 
 export const ConsoleLayout: React.FC<ConsoleLayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
 

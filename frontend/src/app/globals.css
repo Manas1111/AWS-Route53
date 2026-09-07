@@ -407,10 +407,10 @@ button { font-family: var(--font); }
 }
 
 /* ============================================================
-   SIDEBAR (white, ~220px)
+   SIDEBAR (white, compact ~115px matching real AWS console)
    ============================================================ */
 .aws-sidebar {
-  width: 220px;
+  width: 115px;
   background: var(--aws-sidebar-bg);
   border-right: 1px solid var(--aws-sidebar-border);
   flex-shrink: 0;
@@ -425,13 +425,13 @@ button { font-family: var(--font); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px 10px 16px;
+  padding: 6px 8px;
   border-bottom: 1px solid var(--aws-border-subtle);
   flex-shrink: 0;
 }
 
 .aws-sidebar-title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--aws-text-primary);
   letter-spacing: -0.1px;
@@ -445,7 +445,7 @@ button { font-family: var(--font); }
   padding: 2px;
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   border-radius: 2px;
   transition: color 0.1s;
@@ -454,21 +454,22 @@ button { font-family: var(--font); }
 
 .aws-sidebar-nav {
   flex: 1;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 /* Plain nav item (not in a group) */
 .aws-nav-flat-item {
   display: flex;
   align-items: center;
-  padding: 5px 16px;
-  font-size: 13px;
+  padding: 2.5px 8px;
+  font-size: 11px;
   color: var(--aws-sidebar-text);
   text-decoration: none;
   cursor: pointer;
   transition: background 0.1s;
-  border-left: 3px solid transparent;
-  line-height: 1.4;
+  border-left: 2px solid transparent;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 .aws-nav-flat-item:hover { background: var(--aws-sidebar-hover-bg); text-decoration: none; }
 .aws-nav-flat-item.active {
@@ -481,9 +482,9 @@ button { font-family: var(--font); }
 .aws-nav-section-header {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 16px 4px;
-  font-size: 13px;
+  gap: 4px;
+  padding: 3px 8px 1px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--aws-text-primary);
   cursor: pointer;
@@ -493,11 +494,12 @@ button { font-family: var(--font); }
   width: 100%;
   text-align: left;
   transition: background 0.1s;
+  white-space: nowrap;
 }
 .aws-nav-section-header:hover { background: var(--aws-sidebar-hover-bg); }
 
 .aws-nav-section-arrow {
-  font-size: 10px;
+  font-size: 8px;
   color: var(--aws-text-muted);
   transition: transform 0.15s;
   flex-shrink: 0;
@@ -513,14 +515,15 @@ button { font-family: var(--font); }
 .aws-nav-sub-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 16px 4px 28px;
-  font-size: 13px;
+  gap: 3px;
+  padding: 2px 8px 2px 14px;
+  font-size: 10.5px;
   color: var(--aws-sidebar-text);
   text-decoration: none;
   cursor: pointer;
   transition: background 0.1s;
-  line-height: 1.4;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 .aws-nav-sub-item:hover { background: var(--aws-sidebar-hover-bg); text-decoration: none; }
 .aws-nav-sub-item.active {
@@ -529,14 +532,11 @@ button { font-family: var(--font); }
 }
 
 .aws-nav-badge {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  background: #e3f2fd;
-  color: #0073bb;
-  border: 1px solid #bbdefb;
-  padding: 0 4px;
-  border-radius: 2px;
-  line-height: 1.4;
+  color: #0972d3;
+  margin-left: 3px;
+  line-height: 1;
   flex-shrink: 0;
 }
 
@@ -1261,16 +1261,15 @@ button { font-family: var(--font); }
    RADIO OPTION CARDS (Create Hosted Zone type selector)
    ============================================================ */
 .aws-radio-cards {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  max-width: 800px;
 }
 
 .aws-radio-card {
-  flex: 1;
-  min-width: 200px;
-  border: 1px solid var(--aws-border);
-  border-radius: 2px;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
   padding: 12px 14px;
   cursor: pointer;
   display: flex;
@@ -1281,8 +1280,8 @@ button { font-family: var(--font); }
 }
 .aws-radio-card:hover { border-color: var(--aws-link); }
 .aws-radio-card.selected {
-  border-color: var(--aws-link);
-  background: #f0f7fb;
+  border: 1.5px solid var(--aws-link);
+  background: #f2f8fd;
 }
 
 .aws-radio-card input[type="radio"] {
@@ -1299,20 +1298,20 @@ button { font-family: var(--font); }
   font-size: 13px;
   font-weight: 700;
   color: var(--aws-text-primary);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 .aws-radio-card-desc {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--aws-text-secondary);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 /* ============================================================
    CREATE PAGE LAYOUT
    ============================================================ */
 .aws-create-page {
-  padding: 16px 20px;
-  max-width: 860px;
+  padding: 16px 28px;
+  width: 100%;
 }
 
 .aws-create-page-title {
@@ -1321,19 +1320,20 @@ button { font-family: var(--font); }
   color: var(--aws-text-primary);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 16px;
 }
 
 .aws-create-section {
   background: #fff;
-  border: 1px solid var(--aws-border-subtle);
-  border-radius: 2px;
-  margin-bottom: 16px;
+  border: 1px solid #eaeded;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  padding: 22px 24px;
 }
 .aws-create-section-header {
-  padding: 14px 20px 4px;
-  border-bottom: 1px solid var(--aws-border-subtle);
+  padding: 0 0 16px 0;
+  border-bottom: none;
 }
 .aws-create-section-header h2 {
   font-size: 16px;
@@ -1342,19 +1342,81 @@ button { font-family: var(--font); }
   margin-bottom: 4px;
 }
 .aws-create-section-header p {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--aws-text-secondary);
-  margin-bottom: 12px;
-  line-height: 1.5;
+  margin-bottom: 0;
+  line-height: 1.4;
 }
-.aws-create-section-body { padding: 16px 20px; }
+.aws-create-section-body { padding: 0; }
 
 .aws-create-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 16px 0 8px;
+  gap: 16px;
+  padding: 8px 0 24px;
+}
+
+.aws-btn-pill-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--aws-link);
+  color: var(--aws-link);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.1s, border-color 0.1s;
+}
+.aws-btn-pill-action:hover {
+  background: #f2f8fd;
+  text-decoration: none;
+}
+
+.aws-btn-link-action {
+  background: none;
+  border: none;
+  color: var(--aws-link);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-family: var(--font);
+  transition: color 0.1s;
+}
+.aws-btn-link-action:hover {
+  text-decoration: underline;
+}
+
+.aws-btn-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 20px;
+  background: var(--aws-primary);
+  color: #fff;
+  border: 1px solid var(--aws-primary);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.1s;
+}
+.aws-btn-pill-primary:hover:not(:disabled) {
+  background: var(--aws-primary-hover);
+  border-color: var(--aws-primary-hover);
+}
+.aws-btn-pill-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* ============================================================
