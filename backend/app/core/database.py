@@ -1,7 +1,24 @@
+from pathlib import Path
 from typing import Generator
 from sqlalchemy import create_engine, event
+from sqlalchemy.engine.url import make_url
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from app.core.config import settings
+
+
+def _ensure_sqlite_parent_dir(database_url: str) -> None:
+    if database_url.startswith("sqlite"):
+        try:
+            url = make_url(database_url)
+            if url.database and url.database != ":memory:":
+                parent = Path(url.database).parent
+                if str(parent) not in ("", "."):
+                    parent.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            pass
+
+
+_ensure_sqlite_parent_dir(settings.DATABASE_URL)
 
 connect_args = {"check_same_thread": False} if settings.DATABASE_URL.startswith("sqlite") else {}
 
@@ -33,6 +50,7 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def init_db() -> None:
+    _ensure_sqlite_parent_dir(settings.DATABASE_URL)
     import app.models  # noqa: F401
     Base.metadata.create_all(bind=engine)
 
