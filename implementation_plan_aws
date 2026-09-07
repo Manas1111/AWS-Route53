@@ -1,0 +1,99 @@
+# Project Foundation Implementation Plan
+
+Establish the initial foundational structure and runtime baseline for a full-stack AWS Route 53 clone, featuring a Next.js (TypeScript) frontend and a FastAPI (Python + SQLite) backend.
+
+## User Review Required
+
+> [!IMPORTANT]
+> In accordance with project requirements and instructions, this foundation phase will NOT implement Hosted Zones, DNS Records, authentication, AWS integrations, mock data, or feature UIs. It focuses strictly on application shell, directory structure, configurations, and connectivity.
+
+- **Frontend Styling**: Standard Next.js with vanilla CSS tokens (no TailwindCSS as per guidelines) tailored to a clean AWS Console aesthetic.
+- **Backend Architecture**: Layered FastAPI structure (`core`, `api`, `models`, `schemas`, `services`) with SQLAlchemy SQLite session management and a `GET /health` endpoint.
+
+---
+
+## Proposed Changes
+
+### Project Root
+
+#### [NEW] [.gitignore](file:///c:/Users/manas/AWS%20ROUTE53/.gitignore)
+- Configure root ignores for Node, Python virtual environments, SQLite database files (`*.db`, `*.sqlite3`), OS artifacts, and local secrets (`.env`, `.env.local`).
+
+---
+
+### Backend (`backend/`)
+
+#### [NEW] [requirements.txt](file:///c:/Users/manas/AWS%20ROUTE53/backend/requirements.txt)
+- Define strictly required packages: `fastapi`, `uvicorn[standard]`, `sqlalchemy`, `pydantic`, `pydantic-settings`.
+
+#### [NEW] [.env.example](file:///c:/Users/manas/AWS%20ROUTE53/backend/.env.example) & [.env](file:///c:/Users/manas/AWS%20ROUTE53/backend/.env)
+- Environment configuration: `PROJECT_NAME`, `DATABASE_URL=sqlite:///./route53.db`, `CORS_ORIGINS=["http://localhost:3000"]`.
+
+#### [NEW] [app/core/config.py](file:///c:/Users/manas/AWS%20ROUTE53/backend/app/core/config.py)
+- Configuration management using `pydantic-settings` with default fallbacks and `.env` loading.
+
+#### [NEW] [app/core/database.py](file:///c:/Users/manas/AWS%20ROUTE53/backend/app/core/database.py)
+- SQLite SQLAlchemy engine with `check_same_thread=False`, scoped `sessionmaker`, declarative `Base`, and `get_db` generator dependency.
+
+#### [NEW] [app/schemas/health.py](file:///c:/Users/manas/AWS%20ROUTE53/backend/app/schemas/health.py)
+- Pydantic schema for `GET /health` response (`status`, `environment`, `database`).
+
+#### [NEW] [app/api/v1/endpoints/health.py](file:///c:/Users/manas/AWS%20ROUTE53/backend/app/api/v1/endpoints/health.py)
+- Health check route validating API responsiveness and verifying SQLite connection readiness.
+
+#### [NEW] [app/api/v1/router.py](file:///c:/Users/manas/AWS%20ROUTE53/backend/app/api/v1/router.py)
+- V1 APIRouter mounting modular sub-routers.
+
+#### [NEW] [app/main.py](file:///c:/Users/manas/AWS%20ROUTE53/backend/app/main.py)
+- FastAPI application initialization, CORS middleware setup, router registration, and root health check route.
+
+#### Supporting package stubs
+- `backend/app/models/__init__.py`
+- `backend/app/services/__init__.py`
+
+---
+
+### Frontend (`frontend/`)
+
+#### [NEW] [package.json](file:///c:/Users/manas/AWS%20ROUTE53/frontend/package.json)
+- Next.js (App Router), React, TypeScript scripts and core dependencies.
+
+#### [NEW] [tsconfig.json](file:///c:/Users/manas/AWS%20ROUTE53/frontend/tsconfig.json) & [next.config.ts](file:///c:/Users/manas/AWS%20ROUTE53/frontend/next.config.ts)
+- Path aliases (`@/*` pointing to `./src/*`), strict typing, and Next.js settings.
+
+#### [NEW] [.env.example](file:///c:/Users/manas/AWS%20ROUTE53/frontend/.env.example) & [.env.local](file:///c:/Users/manas/AWS%20ROUTE53/frontend/.env.local)
+- Define `NEXT_PUBLIC_API_URL=http://localhost:8000`.
+
+#### [NEW] [src/lib/config.ts](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/lib/config.ts) & [src/lib/api-client.ts](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/lib/api-client.ts)
+- Lightweight, typed API helper for backend communication.
+
+#### [NEW] [src/types/api.ts](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/types/api.ts)
+- Common API response and health status types.
+
+#### [NEW] [src/app/globals.css](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/app/globals.css)
+- Clean, vanilla CSS design tokens, reset, and AWS Console-inspired palette (dark navigation bar, neutral canvas, refined typography).
+
+#### [NEW] [src/components/layout/ConsoleHeader.tsx](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/components/layout/ConsoleHeader.tsx)
+- AWS Console styled top bar shell with service indicator and status badge.
+
+#### [NEW] [src/app/layout.tsx](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/app/layout.tsx) & [src/app/page.tsx](file:///c:/Users/manas/AWS%20ROUTE53/frontend/src/app/page.tsx)
+- Application root layout and foundation dashboard shell displaying service connection status.
+
+---
+
+## Verification Plan
+
+### Automated / CLI Verification
+1. **Backend**:
+   - Create Python venv: `python -m venv backend/.venv`
+   - Install dependencies: `backend/.venv/Scripts/pip install -r backend/requirements.txt`
+   - Start backend server: `backend/.venv/Scripts/uvicorn app.main:app --port 8000`
+   - Test endpoint: `curl http://localhost:8000/health` (verify HTTP 200 and `{ "status": "healthy", ... }`)
+2. **Frontend**:
+   - Install dependencies: `npm install` inside `frontend/`
+   - TypeScript verification: `npm run build` or Next.js dev startup check
+   - Start frontend: `npm run dev` on port 3000
+   - Verify page load and health-check communication with backend
+
+### Manual Verification
+- Verify that opening `http://localhost:3000` renders the foundation shell cleanly and connects to `http://localhost:8000/health`.
