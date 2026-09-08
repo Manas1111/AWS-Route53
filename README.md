@@ -4,6 +4,47 @@ A full-stack AWS Route 53 clone built for the software engineering assignment. T
 
 ---
 
+## Live Deployment & API Endpoints
+
+**Frontend:**  
+https://aws-route53-iota.vercel.app
+
+**Backend:**  
+https://aws-route53.fastapicloud.dev
+
+**Health checks:**
+- `GET https://aws-route53.fastapicloud.dev/health`  
+  Returns the backend service health status.
+- `GET https://aws-route53.fastapicloud.dev/api/v1/health`  
+  Returns the API v1 health status.
+
+**FastAPI API documentation:**
+- Swagger UI: https://aws-route53.fastapicloud.dev/docs
+- OpenAPI schema: https://aws-route53.fastapicloud.dev/openapi.json
+
+### API Overview
+
+**Authentication:**
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/logout`
+- `GET /api/v1/auth/me`
+
+**Hosted Zones:**
+- `GET /api/v1/hosted-zones`
+- `POST /api/v1/hosted-zones`
+- `GET /api/v1/hosted-zones/{id}`
+- `PUT /api/v1/hosted-zones/{id}`
+- `DELETE /api/v1/hosted-zones/{id}`
+
+**DNS Records:**
+- `GET /api/v1/hosted-zones/{zone_id}/records`
+- `POST /api/v1/hosted-zones/{zone_id}/records`
+- `GET /api/v1/hosted-zones/{zone_id}/records/{record_id}`
+- `PUT /api/v1/hosted-zones/{zone_id}/records/{record_id}`
+- `DELETE /api/v1/hosted-zones/{zone_id}/records/{record_id}`
+
+---
+
 ## Tech Stack
 
 - **Frontend**:
