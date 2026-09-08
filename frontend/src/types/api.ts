@@ -63,6 +63,7 @@ export type RecordType =
   | "TXT"
   | "MX"
   | "NS"
+  | "SOA"
   | "PTR"
   | "SRV"
   | "CAA";

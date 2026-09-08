@@ -17,9 +17,9 @@ interface ConsoleLayoutProps {
  * "Route 53 > Current page" like the real AWS console.
  */
 function getBreadcrumbs(pathname: string) {
-  const base = [{ label: "Route 53", href: "/" }];
+  const base = [{ label: "Route 53", href: "/dashboard" }];
 
-  if (pathname === "/" || pathname === "") {
+  if (pathname === "/" || pathname === "" || pathname === "/dashboard") {
     return [...base, { label: "Dashboard" }];
   }
   if (pathname.startsWith("/hosted-zones/create")) {
@@ -82,6 +82,7 @@ export const ConsoleLayout: React.FC<ConsoleLayoutProps> = ({ children }) => {
           <Sidebar
             isOpen={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
+            onToggle={() => setIsSidebarOpen((p) => !p)}
           />
           <main className="aws-workspace" id="main-content" role="main">
             {children}

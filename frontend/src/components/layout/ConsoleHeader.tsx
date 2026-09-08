@@ -17,43 +17,57 @@ export const ConsoleHeader: React.FC<ConsoleHeaderProps> = () => {
 
   return (
     <div className="aws-topbar" role="banner">
-      {/* AWS wordmark with signature orange smile arrow (inline SVG, no external URL) */}
-      <div className="aws-topbar-logo" aria-label="AWS Console Home" style={{ padding: "0 10px", display: "flex", alignItems: "center" }}>
-        <svg
-          width="36"
-          height="22"
-          viewBox="0 0 46 26"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="AWS"
+      {/* AWS logo image — /aws-logo.png with white letters and orange smile */}
+      <div
+        className="aws-topbar-logo"
+        aria-label="AWS Console Home"
+        style={{ padding: "0 8px", display: "flex", alignItems: "center" }}
+      >
+        <div
+          style={{
+            position: "relative",
+            width: "48px",
+            height: "auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
         >
-          {/* 'a' */}
-          <path
-            d="M10.1 11.2c-.6-.5-1.5-.8-2.5-.8-2 0-3.3 1.1-3.3 2.9 0 1.7 1.2 2.8 3.2 2.8 1.1 0 1.9-.4 2.6-1v-3.9zm3.3 6.6h-3v-1.2c-.8.9-2.1 1.4-3.6 1.4-3.1 0-5.3-2-5.3-4.9 0-3.1 2.3-5 5.9-5 1.1 0 2.1.2 3 .5v-.4c0-1.4-.9-2.2-2.6-2.2-1.2 0-2.3.4-3.3 1.1l-1-2c1.3-.9 2.9-1.4 4.7-1.4 3.5 0 5.4 1.8 5.4 5v9.2h-.2z"
-            fill="#ffffff"
+          {/* Bottom layer: preserves original orange AWS smile */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/aws-logo.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              clipPath: "inset(55% 0 0 0)",
+              pointerEvents: "none",
+            }}
           />
-          {/* 'w' */}
-          <path
-            d="M22.7 17.8h-2.8l-2.6-9.8h2.9l1.3 6.3 1.5-6.3h2.5l1.5 6.3 1.3-6.3h2.8l-2.5 9.8h-2.8l-1.6-6.6-1.5 6.6z"
-            fill="#ffffff"
+          {/* Top layer: aws letters turned white via CSS filter */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/aws-logo.png"
+            alt="AWS"
+            style={{
+              width: "48px",
+              height: "auto",
+              display: "block",
+              objectFit: "contain",
+              clipPath: "inset(0 0 42% 0)",
+              filter: "brightness(0) invert(1)",
+            }}
           />
-          {/* 's' */}
-          <path
-            d="M37.3 13.4c-2-.5-2.8-1-2.8-1.8 0-.9.8-1.5 2.1-1.5 1.2 0 2.4.4 3.3 1l1.1-2.1c-1.2-.8-2.8-1.3-4.5-1.3-3.1 0-5.1 1.8-5.1 4.1 0 2.1 1.4 3.2 4 3.9 2.2.6 2.9 1.1 2.9 2 0 1-.9 1.7-2.4 1.7-1.5 0-3-.5-4.1-1.4l-1.1 2.1c1.3 1.1 3.2 1.7 5.3 1.7 3.4 0 5.5-1.8 5.5-4.3-.2-2.2-1.6-3.4-4.2-4z"
-            fill="#ffffff"
-          />
-          {/* Curved orange smile */}
-          <path
-            d="M36.8 20.8c-4 2.5-10.5 3.9-18.3 3.9-9.4 0-17.1-2.9-20.8-6.9-.3-.3 0-.7.4-.5 7.8 4 15.6 5.6 20.4 5.6 7 0 13.5-1.5 18-4.5.5-.4 1 .2.3 2.4z"
-            fill="#FF9900"
-          />
-          {/* Smile arrowhead */}
-          <path
-            d="M38.5 19c-.3-.4-2.1.2-3.2.5-.3.1-.3.5 0 .5 1.5.7 4.3 1.6 4.9 1 .5-.6-.8-3.2-1.7-4.5-.2-.3-.5-.1-.4.2.2 1.1.7 2.7.4 2.3z"
-            fill="#FF9900"
-          />
-        </svg>
+        </div>
       </div>
+
 
       <div className="aws-topbar-sep" aria-hidden="true" />
 

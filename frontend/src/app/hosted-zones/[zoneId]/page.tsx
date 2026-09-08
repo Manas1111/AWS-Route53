@@ -10,7 +10,7 @@ import { DeleteDNSRecordModal } from "@/components/dns-records/DeleteDNSRecordMo
 import { apiClient } from "@/lib/api-client";
 import type { HostedZone, DNSRecord, DNSRecordListResponse } from "@/types/api";
 
-const RECORD_TYPES = ["ALL","A","AAAA","CNAME","TXT","MX","NS","PTR","SRV","CAA"];
+const RECORD_TYPES = ["ALL","A","AAAA","CNAME","TXT","MX","NS","SOA","PTR","SRV","CAA"];
 
 export default function HostedZoneDetailPage({
   params,
@@ -97,6 +97,34 @@ export default function HostedZoneDetailPage({
   };
   const onError = (msg: string) => setNotification({ type: "error", message: msg });
 
+  const [nameServers, setNameServers] = useState<string[]>([]);
+  const [copiedNs, setCopiedNs] = useState<string | null>(null);
+
+  // Extract name servers from loaded records whenever they change
+  useEffect(() => {
+    if (zone?.type === "PUBLIC" && records.length > 0) {
+      const nsRecord = records.find(
+        (r) => r.type === "NS" && r.name === zone.name
+      ) ?? records.find((r) => r.type === "NS");
+      if (nsRecord) {
+        const servers = nsRecord.value
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        setNameServers(servers);
+      }
+    } else {
+      setNameServers([]);
+    }
+  }, [records, zone]);
+
+  const handleCopyNs = (ns: string) => {
+    navigator.clipboard.writeText(ns).then(() => {
+      setCopiedNs(ns);
+      setTimeout(() => setCopiedNs(null), 1500);
+    }).catch(() => {});
+  };
+
   const startRecord = total > 0 ? (page - 1) * limit + 1 : 0;
   const endRecord = Math.min(page * limit, total);
 
@@ -163,6 +191,67 @@ export default function HostedZoneDetailPage({
               <span className="aws-kv-label">Description</span>
               <span className="aws-kv-value">{zone.description || "—"}</span>
             </div>
+            {zone.type === "PUBLIC" && (
+              <div className="aws-kv-cell" style={{ gridColumn: "span 2" }}>
+                <span className="aws-kv-label">Name servers</span>
+                <div className="aws-kv-value">
+                  {nameServers.length > 0 ? (
+                    <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                      {nameServers.map((ns) => (
+                        <li
+                          key={ns}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            padding: "3px 0",
+                          }}
+                        >
+                          <span className="aws-mono" style={{ fontSize: "13px", color: "var(--aws-text-primary)" }}>
+                            {ns}
+                          </span>
+                          <button
+                            type="button"
+                            title={copiedNs === ns ? "Copied!" : "Copy to clipboard"}
+                            aria-label={`Copy ${ns}`}
+                            onClick={() => handleCopyNs(ns)}
+                            style={{
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              padding: "2px 4px",
+                              color: copiedNs === ns ? "var(--aws-green, #1d8102)" : "var(--aws-text-secondary)",
+                              display: "flex",
+                              alignItems: "center",
+                              borderRadius: "3px",
+                              flexShrink: 0,
+                              transition: "color 0.15s",
+                            }}
+                          >
+                            {copiedNs === ns ? (
+                              /* Checkmark icon */
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"/>
+                              </svg>
+                            ) : (
+                              /* Copy icon */
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                              </svg>
+                            )}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : recordsLoading ? (
+                    <span style={{ color: "var(--aws-text-secondary)", fontSize: "13px" }}>Loading…</span>
+                  ) : (
+                    <span style={{ color: "var(--aws-text-secondary)" }}>—</span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

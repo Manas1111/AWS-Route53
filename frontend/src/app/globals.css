@@ -407,10 +407,10 @@ button { font-family: var(--font); }
 }
 
 /* ============================================================
-   SIDEBAR (white, compact ~115px matching real AWS console)
+   SIDEBAR (AWS Route 53 console navigation with always-visible icon rail)
    ============================================================ */
 .aws-sidebar {
-  width: 115px;
+  width: 48px;
   background: var(--aws-sidebar-bg);
   border-right: 1px solid var(--aws-sidebar-border);
   flex-shrink: 0;
@@ -418,126 +418,131 @@ button { font-family: var(--font); }
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  transition: width 0.2s ease;
+  transition: width 0.15s ease-out;
+}
+
+.aws-sidebar.open {
+  width: 220px;
 }
 
 .aws-sidebar-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 6px 8px;
+  justify-content: center;
+  padding: 0;
   border-bottom: 1px solid var(--aws-border-subtle);
   flex-shrink: 0;
+  height: 42px;
+}
+
+.aws-sidebar.open .aws-sidebar-header {
+  justify-content: space-between;
+  padding: 0 12px 0 16px;
 }
 
 .aws-sidebar-title {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--aws-text-primary);
   letter-spacing: -0.1px;
+  white-space: nowrap;
 }
 
 .aws-sidebar-collapse {
   background: none;
   border: none;
-  color: var(--aws-text-muted);
+  color: var(--aws-text-secondary);
   cursor: pointer;
-  padding: 2px;
+  padding: 6px;
   display: flex;
   align-items: center;
-  font-size: 14px;
-  line-height: 1;
+  justify-content: center;
   border-radius: 2px;
-  transition: color 0.1s;
+  transition: color 0.1s, background 0.1s;
 }
-.aws-sidebar-collapse:hover { color: var(--aws-text-primary); }
+.aws-sidebar-collapse:hover {
+  color: var(--aws-text-primary);
+  background: var(--aws-sidebar-hover-bg);
+}
 
 .aws-sidebar-nav {
   flex: 1;
-  padding: 2px 0;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-/* Plain nav item (not in a group) */
+/* Nav items */
 .aws-nav-flat-item {
   display: flex;
   align-items: center;
-  padding: 2.5px 8px;
-  font-size: 11px;
+  justify-content: center;
+  height: 38px;
+  padding: 0;
+  margin: 0 4px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 400;
   color: var(--aws-sidebar-text);
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.1s;
-  border-left: 2px solid transparent;
-  line-height: 1.35;
+  transition: background 0.1s, color 0.1s;
   white-space: nowrap;
 }
-.aws-nav-flat-item:hover { background: var(--aws-sidebar-hover-bg); text-decoration: none; }
+
+.aws-sidebar.open .aws-nav-flat-item {
+  justify-content: flex-start;
+  padding: 0 12px;
+}
+
+.aws-nav-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #545b64;
+  transition: color 0.1s;
+}
+
+.aws-sidebar.open .aws-nav-item-icon {
+  margin-right: 10px;
+}
+
+.aws-nav-item-label {
+  display: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.aws-sidebar.open .aws-nav-item-label {
+  display: inline;
+}
+
+.aws-nav-flat-item:hover {
+  color: var(--aws-sidebar-active-text);
+  background: var(--aws-sidebar-hover-bg);
+  text-decoration: none;
+}
+.aws-nav-flat-item:hover .aws-nav-item-icon {
+  color: var(--aws-sidebar-active-text);
+}
+
+/* Active item highlight: AWS blue text/icon, subtle light-blue background, compact highlight */
 .aws-nav-flat-item.active {
   color: var(--aws-sidebar-active-text);
+  background: #ebf5fe;
   font-weight: 700;
-  border-left-color: transparent;
 }
-
-/* Section header (collapsible) */
-.aws-nav-section-header {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px 1px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--aws-text-primary);
-  cursor: pointer;
-  user-select: none;
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  transition: background 0.1s;
-  white-space: nowrap;
-}
-.aws-nav-section-header:hover { background: var(--aws-sidebar-hover-bg); }
-
-.aws-nav-section-arrow {
-  font-size: 8px;
-  color: var(--aws-text-muted);
-  transition: transform 0.15s;
-  flex-shrink: 0;
-}
-.aws-nav-section-arrow.open { transform: rotate(0deg); }
-.aws-nav-section-arrow.closed { transform: rotate(-90deg); }
-
-.aws-nav-section-items {
-  overflow: hidden;
-}
-
-/* Indented item under a section */
-.aws-nav-sub-item {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  padding: 2px 8px 2px 14px;
-  font-size: 10.5px;
-  color: var(--aws-sidebar-text);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.1s;
-  line-height: 1.35;
-  white-space: nowrap;
-}
-.aws-nav-sub-item:hover { background: var(--aws-sidebar-hover-bg); text-decoration: none; }
-.aws-nav-sub-item.active {
+.aws-nav-flat-item.active .aws-nav-item-icon {
   color: var(--aws-sidebar-active-text);
-  font-weight: 700;
 }
-
-.aws-nav-badge {
-  font-size: 9px;
-  font-weight: 700;
-  color: #0972d3;
-  margin-left: 3px;
-  line-height: 1;
-  flex-shrink: 0;
+.aws-nav-flat-item.active:hover {
+  background: #e2f1fc;
 }
 
 /* ============================================================
@@ -1481,105 +1486,253 @@ button { font-family: var(--font); }
 /* ============================================================
    LOGIN PAGE
    ============================================================ */
+/* ============================================================
+   LOGIN PAGE (matching AWS Console Sign-in reference)
+   ============================================================ */
 .aws-auth-wrapper {
   min-height: 100vh;
-  background: #eaeded;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 48px 16px;
+  background: #ffffff;
+  position: relative;
+  overflow-x: hidden;
   font-family: var(--font);
 }
 
-.aws-login-container { width: 100%; max-width: 420px; }
-
-.aws-login-header {
+.aws-login-page {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 0 4px;
+  justify-content: center;
+  padding: 60px 16px 40px;
+  position: relative;
+  z-index: 1;
 }
 
-.aws-login-logo {
+.aws-login-top-bar {
+  position: absolute;
+  top: 18px;
+  right: 28px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 700;
+  gap: 18px;
+  z-index: 10;
 }
 
-.aws-login-logo-text {
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--aws-orange);
-  font-style: italic;
-  font-family: "Arial Black", Arial, sans-serif;
+.aws-login-top-link {
+  font-size: 12px;
+  color: #0972d3;
+  text-decoration: none;
+  font-weight: 500;
+}
+.aws-login-top-link:hover {
+  text-decoration: underline;
+}
+
+.aws-login-top-text {
+  font-size: 12px;
+  color: #545b64;
+  cursor: pointer;
+  user-select: none;
+}
+.aws-login-top-text:hover {
+  color: #16191f;
+}
+
+.aws-login-logo-wrap {
+  margin-bottom: 24px;
 }
 
 .aws-login-card {
-  background: #fff;
-  border: 1px solid var(--aws-border);
-  border-radius: 2px;
-  padding: 32px;
-  box-shadow: 0 1px 2px rgba(0,28,36,0.08);
+  width: 100%;
+  max-width: 470px;
+  background: #ffffff;
+  border: 1px solid #d5dbdb;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 28, 36, 0.04);
+  padding: 38px 36px;
+  position: relative;
+  z-index: 2;
 }
 
 .aws-login-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--aws-text-primary);
+  color: #16191f;
   margin-bottom: 4px;
+  line-height: 1.2;
 }
 
 .aws-login-subtitle {
   font-size: 13px;
-  color: var(--aws-text-secondary);
-  margin-bottom: 20px;
+  color: #545b64;
+  margin-bottom: 22px;
+  line-height: 1.4;
 }
 
-.aws-demo-box {
-  margin-top: 24px;
-  padding: 12px 14px;
-  background: #f8f9fa;
-  border: 1px solid var(--aws-border-subtle);
-  border-radius: 2px;
-  font-size: 12px;
-}
-
-.aws-demo-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  color: var(--aws-text-primary);
+.aws-login-label {
+  font-size: 13px;
   font-weight: 700;
+  color: #16191f;
+  margin-bottom: 6px;
+  display: block;
 }
 
-.aws-demo-fill-btn {
-  background: #fff;
-  border: 1px solid #879596;
-  border-radius: 2px;
-  padding: 3px 8px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--aws-text-primary);
+.aws-login-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #16191f;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.aws-login-input:focus {
+  border-color: #0972d3;
+  box-shadow: 0 0 0 1px #0972d3;
+}
+.aws-login-input::placeholder {
+  font-style: italic;
+  color: #879596;
+}
+
+.aws-login-password-wrap {
+  position: relative;
+  width: 100%;
+}
+.aws-login-password-wrap .aws-login-input {
+  padding-right: 36px;
+}
+.aws-login-lock-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: #0972d3;
+}
+
+.aws-login-demo-group {
+  margin-top: 18px;
+}
+
+.aws-login-demo-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: #16191f;
+  margin-bottom: 8px;
+}
+
+.aws-login-demo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid #d5dbdb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
   cursor: pointer;
-  font-family: var(--font);
-  transition: background 0.1s;
+  background: #ffffff;
+  transition: border-color 0.1s, background 0.1s;
 }
-.aws-demo-fill-btn:hover { background: #f2f3f3; }
+.aws-login-demo-row:hover {
+  border-color: #aab7b8;
+  background: #fbfcfd;
+}
+.aws-login-demo-row.selected {
+  border-color: #0972d3;
+  background: #f8fbfe;
+}
 
-.aws-demo-details { display: flex; flex-direction: column; gap: 4px; color: var(--aws-text-secondary); }
-.aws-demo-details code {
-  font-family: var(--font-mono);
-  background: #fff;
-  padding: 1px 4px;
-  border: 1px solid var(--aws-border);
-  border-radius: 2px;
-  color: var(--aws-text-primary);
-  font-weight: 600;
+.aws-login-radio {
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: #0972d3;
+  width: 15px;
+  height: 15px;
+}
+
+.aws-login-demo-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #16191f;
+  line-height: 1.2;
+}
+
+.aws-login-demo-sub {
+  font-size: 12px;
+  color: #545b64;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.aws-login-btn-primary {
+  width: 100%;
+  height: 38px;
+  border-radius: 20px;
+  background: #ec7211;
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.aws-login-btn-primary:hover:not(:disabled) {
+  background: #eb5f07;
+}
+.aws-login-btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.aws-login-btn-secondary {
+  width: 100%;
+  height: 38px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1.5px solid #0972d3;
+  color: #0972d3;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.aws-login-btn-secondary:hover {
+  background: #f2f8fd;
+}
+
+.aws-login-footer {
+  max-width: 470px;
+  text-align: center;
+  font-size: 11px;
+  color: #545b64;
+  margin-top: 24px;
+  line-height: 1.5;
+  padding: 0 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.aws-login-link {
+  color: #0972d3;
+  text-decoration: none;
+}
+.aws-login-link:hover {
+  text-decoration: underline;
 }
 
 /* ============================================================
@@ -1621,23 +1774,24 @@ button { font-family: var(--font); }
 /* ============================================================
    PLACEHOLDER PAGES
    ============================================================ */
-.aws-placeholder-box { padding: 36px 24px; text-align: center; max-width: 640px; margin: 0 auto; }
+.aws-placeholder-box { padding: 48px 24px; text-align: center; max-width: 640px; margin: 0 auto; }
 .aws-placeholder-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 3px 8px;
-  border-radius: 2px;
-  background: #fff3e0;
-  color: #d35400;
-  border: 1px solid #ffe0b2;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #e7f3fd;
+  color: #0972d3;
+  border: 1px solid #b3d7f5;
   margin-bottom: 16px;
 }
 .aws-placeholder-heading { font-size: 18px; font-weight: 700; color: var(--aws-text-primary); margin-bottom: 12px; }
 .aws-placeholder-text { font-size: 13px; color: var(--aws-text-secondary); line-height: 1.6; margin-bottom: 24px; }
-.aws-placeholder-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.aws-placeholder-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
 /* ============================================================
    CLOUDSCAPE & ROUTE 53 REFINEMENT STYLES
@@ -1808,6 +1962,7 @@ button { font-family: var(--font); }
 }
 @media (max-width: 900px) {
   .aws-sidebar {
+    width: 220px;
     position: fixed;
     top: 76px; /* topbar 40 + navbar 36 */
     bottom: 0;
@@ -1817,7 +1972,27 @@ button { font-family: var(--font); }
     transition: transform 0.2s ease;
     box-shadow: 2px 0 12px rgba(0,0,0,0.2);
   }
-  .aws-sidebar.open { transform: translateX(0); }
+  .aws-sidebar.open {
+    transform: translateX(0);
+  }
+  .aws-sidebar:not(.open) {
+    transform: translateX(-100%);
+    visibility: hidden;
+  }
+  .aws-sidebar.open .aws-sidebar-header {
+    justify-content: space-between;
+    padding: 0 12px 0 16px;
+  }
+  .aws-sidebar.open .aws-nav-flat-item {
+    justify-content: flex-start;
+    padding: 0 12px;
+  }
+  .aws-sidebar.open .aws-nav-item-icon {
+    margin-right: 10px;
+  }
+  .aws-sidebar.open .aws-nav-item-label {
+    display: inline;
+  }
   .aws-sidebar-backdrop {
     display: block !important;
     position: fixed;
@@ -1837,9 +2012,14 @@ button { font-family: var(--font); }
 .aws-sidebar-backdrop { display: none; }
 
 @media (min-width: 901px) {
+  .aws-sidebar {
+    position: static;
+    transform: none;
+    visibility: visible;
+  }
   .aws-sidebar:not(.open) {
-    width: 0;
-    border-right: none;
-    overflow: hidden;
+    width: 48px;
+    visibility: visible;
+    transform: none;
   }
 }
